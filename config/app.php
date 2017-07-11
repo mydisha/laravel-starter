@@ -12,7 +12,7 @@ return [
 		    | any other location as required by the application or its packages.
 	*/
 
-	'name' => env('APP_NAME', 'Laravel'),
+	'name' => env('APP_NAME', 'Laravel Starter'),
 
 	/*
 		    |--------------------------------------------------------------------------
@@ -185,6 +185,9 @@ return [
 
 		// Entrust Provider
 		Zizaco\Entrust\EntrustServiceProvider::class,
+
+		// Laravel Log Viewer Provider
+		Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 	],
 
 	/*

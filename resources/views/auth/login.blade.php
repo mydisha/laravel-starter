@@ -1,68 +1,61 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ config('app.name') }} | Admin Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/vendor.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/flat-admin.css') }}">
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/theme/blue-sky.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/theme/blue.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/theme/red.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/theme/yellow.css') }}">
+    </head>
+    <body>
+        <div class="app app-default">
+            <div class="app-container app-login">
+                <div class="flex-center">
+                    <div class="app-header"></div>
+                    <div class="app-body">
+                        <div class="app-block">
+                            <div class="app-form">
+                                <div class="form-header">
+                                    <div class="app-brand"><span class="highlight">{{ config('app.name') }}</span> Admin</div>
+                                </div>
+                                <form action="{{ route('login') }}" method="POST">
+                                    {{ csrf_field() }}
+                                    <div class="input-group {{ $errors->has('email') ? ' has-error' : '' }}">
+                                        <span class="input-group-addon" id="basic-addon1">
+                                        <i class="fa fa-user" aria-hidden="true"></i></span>
+                                        <input type="email" name="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1" value="{{ old('email') }}" required autofocus>
+                                    </div>
+                                    @if ($errors->has('email'))
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
+                                    @endif
+                                    <div class="input-group {{ $errors->has('password') ? ' has-error' : '' }}">
+                                        <span class="input-group-addon" id="basic-addon2">
+                                        <i class="fa fa-key" aria-hidden="true"></i></span>
+                                        <input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2" required>
+                                    </div>
+                                    @if ($errors->has('password'))
+                                    <span class="help-block text-danger">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                @endif
+                                    @endif
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success btn-submit">Masuk</button>
+                                        {{-- <a class="btn btn-primary btn-submit" href="{{ URL::route('register') }}">Daftar</a> --}}
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="app-footer">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection
+    </body>
+</html>

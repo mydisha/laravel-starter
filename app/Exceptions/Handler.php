@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 
 class Handler extends ExceptionHandler {
 	/**
@@ -42,12 +43,37 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $exception) {
 		if ($request->is('api/*')) {
-			return response()->json([
+
+			if ($exception instanceof \Illuminate\Http\Exception\HttpResponseException) {
+				return $exception->getResponse();
+			} else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+				$message = 'Error 404 Not Found';
+			} else if ($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+				$message = 'Method Not Allowed Exception';
+			}
+
+			$response = [];
+			$response = [
 				'error' => true,
-				'status' => isset($exception->errorInfo[0]) ? $exception->errorInfo[0] : 0,
-				'message' => $exception->getMessage(),
-			]);
+				'message' => ($exception->getMessage() ? $exception->getMessage() : $message),
+			];
+
+			if (config('app.debug')) {
+				$response['error_info'] = $exception->getTrace();
+				$response['status_code'] = $exception->getCode();
+			}
+
+			$statusCode = method_exists($exception, 'getStatusCode')
+			? $exception->getStatusCode()
+			: 500;
+
+			$response['status_code'] = $statusCode;
+
+			Log::error(($exception->getMessage() ? $exception->getMessage() : $message));
+
+			return response()->json($response);
 		}
+
 		return parent::render($request, $exception);
 	}
 
